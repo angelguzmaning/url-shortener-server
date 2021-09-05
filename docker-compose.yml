@@ -1,0 +1,23 @@
+version: "3"
+services:
+       server:
+           restart: always
+           build:
+             context: .
+             dockerfile: DOCKERFILE
+           volumes:
+             - ./:/usr/src/app
+           ports:
+             - "7500:7500"
+           links:
+             - mongo
+       mongo:
+             container_name: mongo
+             image: mongo
+             volumes:
+               - ./data:/data/db
+               - ./InitDBScripts:/docker-entrypoint-initdb.d/
+             ports:
+               - '27018:27017'
+             environment: 
+               - MONGO_INITDB_DATABASE=testing
